@@ -20,7 +20,7 @@ class WaveData(Data):
 		# seq data is one giant sequence of data,
 		# from which x and y are taken.
 		self.n_batches = self.params['n_batches'] = 2
-		self.n_input = self.params['n_input'] = 8
+		self.n_input = self.params['n_input'] = 10
 
 		wave = self.gen_wave_1()
 		return wave, wave
@@ -59,6 +59,10 @@ def build():
 			'batch_size':15,
 			'n_steps':20,
 			'n_hidden':128,
+			'train_steps':10000,
+			'display_step':50,
+			'save_step':100,
+			'gen_steps':30
 			}
 
 	# Set Data to your data class

@@ -9,13 +9,14 @@ import numpy as np
 LSTM RNN For Predicting the Next Vector Element in a Sequence 
 '''
 
-# Parameters
-training_iters = 12000
-display_step = 10
-save_step = 1000
-
 # Build Data, Params
 data, params = build()
+
+# Parameters
+training_iters = params['train_steps']
+display_step = params['display_step']
+save_step = params['save_step']
+
 
 print('Building Model...')
 model = Model(params)

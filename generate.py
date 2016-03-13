@@ -8,12 +8,11 @@ import numpy as np
 '''
 LSTM RNN For Generating the Next Vector Element in a Sequence 
 '''
-
-# Parameters
-gen_seq_len = 30
-
 # Build Data, Params
 data, params = build()
+
+# Parameters
+gen_seq_len = params['gen_steps']
 
 print('Building Model...')
 model = Model(params)
