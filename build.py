@@ -3,7 +3,7 @@ import numpy as np
 from data import Data
 
 
-class SineData(Data):
+class WaveData(Data):
 	def __init__(self, params):
 		self.n_batches = params['n_batches'] = 2
 		self.n_input = params['n_input'] = 8
