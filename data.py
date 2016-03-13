@@ -28,12 +28,12 @@ class Data:
 
 	def prep_data(self):
 		# Create Dats
-		# data is a set of sequences of shape N x batch_size
 		print('Loading Data...')
 		self.train = self.load_data()
 		self.test = self.load_data()
 
-		# n_input and n_batches should be defined here
+		self.params['n_input'] = self.train.shape[1]
+		self.params['n_batches'] = self.train.shape[0]//self.batch_size
 
 		# Prep Btches
 		self.train_x, self.train_y = self.prep_batches(self.train)
