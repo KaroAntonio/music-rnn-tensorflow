@@ -56,7 +56,7 @@ def build():
 	# Define Params
 	params = {
 			'learning_rate':0.001,
-			'batch_size':20,
+			'batch_size':15,
 			'n_steps':20,
 			'n_hidden':128,
 			}
