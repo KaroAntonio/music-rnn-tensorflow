@@ -1,7 +1,8 @@
 import math
+import os
 import numpy as np
 from data_utils.data import Data
-
+from data_utils.parse_files import *
 
 class WaveData(Data):
 	def __init__(self, params):
@@ -19,39 +20,27 @@ class WaveData(Data):
 	def load_data(self):
 		# seq data is one giant sequence of data,
 		# from which x and y are taken.
-		self.n_batches = self.params['n_batches'] = 2
-		self.n_input = self.params['n_input'] = 10
+		# data sequence length must be at least n_steps*batch_size
+		# Return train , test data
 
-		wave = self.gen_wave_1()
-		return wave, wave
+		# Convinience
+		data_dir = self.params['data_dir']
+		n_steps = self.params['n_steps']
+		block_size = self.params['block_size']
 
-	def gen_wave_2(self):
-		# Vector to vector sine wav
-		data = []
-		num_datas = (self.n_batches*
-					self.batch_size*
-					self.n_steps*
-					(self.n_input/2))
-		for i in range(num_datas):
-			wave = (math.sin(i/5.)+1)/2.
-			data += [[wave] * self.n_input ]
+		directory = os.path.join('data',data_dir,'src',"")
+		out_file = os.path.join('data',data_dir,data_dir)
 
-		return np.array(data)
+		# Load Wave as Numpy
+		convert_wav_files_to_nptensor(directory, block_size, n_steps, out_file)
 
-	def gen_wave_1(self):
-			# Double intersecting sine wave
-			data = []
-			num_datas = (self.n_batches*
-						self.batch_size*
-						self.n_steps*
-						(self.n_input/2))
-			for i in range(num_datas):
-				wave = int((math.sin(i/5.)+1)*self.n_input/2)
-				hot_wave = np.array(self.to_one_hot(wave, self.n_input))
-				data += [hot_wave[::-1] + hot_wave]
+		# Sequence
+		seq_chunks = np.load(os.path.join('data',data_dir,data_dir+'_x.npy'))
+		seq_len = seq_chunks.shape[0]*seq_chunks.shape[1]
+		sequence = seq_chunks.reshape(seq_len,1024)
 
-			return np.array(data)
-
+		return sequence,sequence
+	
 def build():
 	# Define Params
 	params = {
@@ -62,11 +51,13 @@ def build():
 			'train_steps':10000,
 			'display_step':50,
 			'save_step':100,
-			'gen_steps':30
+			'gen_steps':30,
+			'data_dir':'test',
+			'block_size':512
 			}
 
 	# Set Data to your data class
-	data = SineData(params)
+	data = WaveData(params)
 
 	return data, params
 
