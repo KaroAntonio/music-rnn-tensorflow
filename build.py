@@ -5,8 +5,6 @@ from data import Data
 
 class WaveData(Data):
 	def __init__(self, params):
-		self.n_batches = params['n_batches'] = 2
-		self.n_input = params['n_input'] = 8
 		Data.__init__(self,params)
 
 	def post_process(self, sequence):
@@ -21,6 +19,9 @@ class WaveData(Data):
 	def load_data(self):
 		# seq data is one giant sequence of data,
 		# from which x and y are taken.
+		self.n_batches = self.params['n_batches'] = 2
+		self.n_input = self.params['n_input'] = 8
+
 		return self.gen_wave_1()
 
 	def gen_wave_2(self):
