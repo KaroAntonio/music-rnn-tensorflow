@@ -1,6 +1,6 @@
 import math
 import numpy as np
-from data import Data
+from data_utils.data import Data
 
 
 class WaveData(Data):

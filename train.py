@@ -1,5 +1,5 @@
-from model import Model
-from data import build
+from nn_utils.model import Model
+from build import build
 
 import tensorflow as tf
 from tensorflow.models.rnn import rnn, rnn_cell
