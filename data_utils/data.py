@@ -14,9 +14,11 @@ class Data:
 		
 	def load_data(self):
 		'''
-		Return numpy array of 1-d vectors 
+		Return 2 numpy array of 1-d vectors 
 			of size n_input
 			with values in range [0,1]
+			for training and testing
+		return train, test
 		'''
 		pass
 
@@ -29,8 +31,7 @@ class Data:
 	def prep_data(self):
 		# Create Dats
 		print('Loading Data...')
-		self.train = self.load_data()
-		self.test = self.load_data()
+		self.train, self.test = self.load_data()
 
 		min_size = self.params['n_steps']*self.params['batch_size']
 		if len(self.train) < min_size:

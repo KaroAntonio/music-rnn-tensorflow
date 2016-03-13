@@ -49,8 +49,8 @@ with tf.Session() as sess:
 		gen_seq.append(_next[0].tolist())
 		
 		# Update Feed
-		next_feed = np.array(gen_seq[-data.seq_len:])
-		x_feed[0] = np.array(gen_seq[-data.seq_len:])
+		next_feed = np.array(gen_seq[-params['n_steps']:])
+		x_feed[0] = next_feed 
 
 data.post_process(gen_seq)	
 

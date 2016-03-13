@@ -22,7 +22,8 @@ class WaveData(Data):
 		self.n_batches = self.params['n_batches'] = 2
 		self.n_input = self.params['n_input'] = 8
 
-		return self.gen_wave_1()
+		wave = self.gen_wave_1()
+		return wave, wave
 
 	def gen_wave_2(self):
 		# Vector to vector sine wav
