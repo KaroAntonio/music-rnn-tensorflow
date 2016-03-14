@@ -4,6 +4,27 @@ import numpy as np
 from data_utils.data import Data
 from data_utils.parse_files import *
 
+def build():
+	# Define Params
+	params = {
+			'learning_rate':0.001,
+			'batch_size':15,
+			'n_steps':20,
+			'n_hidden':128,
+			'train_steps':100000,
+			'display_step':50,
+			'save_step':100,
+			'gen_steps':30,
+			'data_dir':'test',
+			'block_size':512
+			}
+
+	# Set Data to your data class
+	data = WaveData(params)
+
+	return data, params
+
+
 class WaveData(Data):
 	def __init__(self, params):
 		Data.__init__(self,params)
@@ -12,10 +33,8 @@ class WaveData(Data):
 		# sequence
 		# postprocess a sequence in some way
 
-		# ex. convert each vec to binary and print
-		for vec in sequence:
-			n_hot = [int(e+0.5) for e in vec]
-			print(n_hot)
+		save_generated_example('generated.wav',np.array(sequence))
+
 
 	def load_data(self):
 		# seq data is one giant sequence of data,
@@ -41,25 +60,6 @@ class WaveData(Data):
 
 		return sequence,sequence
 	
-def build():
-	# Define Params
-	params = {
-			'learning_rate':0.001,
-			'batch_size':15,
-			'n_steps':20,
-			'n_hidden':128,
-			'train_steps':10000,
-			'display_step':50,
-			'save_step':100,
-			'gen_steps':30,
-			'data_dir':'test',
-			'block_size':512
-			}
-
-	# Set Data to your data class
-	data = WaveData(params)
-
-	return data, params
 
 if __name__ == "__main__":
     data,params = build()

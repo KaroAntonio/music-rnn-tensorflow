@@ -103,6 +103,7 @@ def time_blocks_to_fft_blocks(blocks_time_domain):
     return fft_blocks
 
 def fft_blocks_to_time_blocks(blocks_ft_domain):
+    print(blocks_ft_domain.shape)
     time_blocks = []
     for block in blocks_ft_domain:
         block = ((block*2)-1) * 2048 #reverse scaling
