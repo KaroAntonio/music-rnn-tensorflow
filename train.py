@@ -31,8 +31,14 @@ def istate():
 	return np.zeros((params['batch_size'], 2*params['n_hidden']))
 
 # Launch the graph
+print('Training...')
 with tf.Session() as sess:
-	sess.run(init)
+	# Initialize sess
+	if params['ckpt']: 
+		saver.restore(sess,'save/'+params['ckpt'])
+	else:
+		sess.run(init)
+
 	step = 1
 	while step * params['batch_size'] < training_iters:
 

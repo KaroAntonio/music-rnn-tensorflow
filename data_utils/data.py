@@ -28,15 +28,28 @@ class Data:
 		'''
 		pass
 
+	def get_seed(self):
+		'''
+		Return seed batch
+		'''
+
+	def show(self):
+		'''
+		Graph or otherwise represent Data in a way that could not be done in a string repr
+		'''
+
 	def prep_data(self):
 		# Create Dats
 		print('Loading Data...')
 		self.train, self.test = self.load_data()
 
+		# Validate Sequence
 		min_size = self.params['n_steps']*self.params['batch_size']
-		if len(self.train) < min_size:
-			raise Exception('Data Sequence must be of length at least n_steps*batch_size: ' + str(min_size))
 
+		if len(self.train) < min_size or len(self.test) < min_size:
+			err_str = 'Data Sequence must be of length at least n_steps*batch_size: '
+			raise Exception(err_str + str(min_size))
+			
 		self.n_input = self.params['n_input'] = self.train.shape[1]
 		self.params['n_batches'] = self.train.shape[0]//self.batch_size
 		self.n_batches = self.params['n_batches']
@@ -56,8 +69,15 @@ class Data:
 		x_data = x_data[:self.num_batches * self.batch_size]
 		y_data = y_data[:self.num_batches * self.batch_size]
 
+		# Shuffle Data
+		np.random.seed(0)
+		x_data = np.random.permutation(x_data)
+		np.random.seed(0)
+		y_data = np.random.permutation(y_data)
+		
 		x = np.split(np.array(x_data),self.num_batches)
 		y = np.split(np.array(y_data),self.num_batches)
+
 		return x,y
 
 	def decode_one_hot_seq(self, one_hot_seq):
@@ -99,68 +119,3 @@ class Data:
 		self.test_pointer = (self.test_pointer+1)%self.num_batches
 		return self.next_batch(self.test_x, self.test_y, self.test_pointer)
 
-class SineData(Data):
-	def __init__(self, params):
-		self.n_batches = params['n_batches'] = 2
-		self.n_input = params['n_input'] = 8
-		Data.__init__(self,params)
-
-	def post_process(self, sequence):
-		# sequence 
-		# postprocess a sequence in some way
-
-		# ex. convert each vec to binary and print
-		for vec in sequence:
-			n_hot = [int(e+0.5) for e in vec]
-			print(n_hot)	
-			
-	def load_data(self):
-		# seq data is one giant sequence of data, 
-		# from which x and y are taken.
-		return self.gen_wave_1()
-		
-	def gen_wave_2(self):
-		# Vector to vector sine wav
-		data = []
-		num_datas = (self.n_batches*
-					self.batch_size*
-					self.n_steps*
-					(self.n_input/2))
-		for i in range(num_datas):
-			wave = (math.sin(i/5.)+1)/2.
-			data += [[wave] * self.n_input ]
-
-		return np.array(data)
-
-	def gen_wave_1(self):
-		# Double intersecting sine wave
-		data = []
-		num_datas = (self.n_batches*
-					self.batch_size*
-					self.n_steps*
-					(self.n_input/2))
-		for i in range(num_datas):
-			wave = int((math.sin(i/5.)+1)*self.n_input/2)
-			hot_wave = np.array(self.to_one_hot(wave, self.n_input))
-			data += [hot_wave[::-1] + hot_wave]
-
-		return np.array(data)
-
-def build():
-    # Define Params
-    params = {
-            'learning_rate':0.001,
-            'batch_size':20,
-            'n_steps':20,
-            'n_hidden':128,
-            }
-
-    # Set Data to your data class
-    data = SineData(params)
-
-    return data, params
-
-if __name__ == "__main__":
-	data,params = build()
-	print(params)
-	x,y = data.next_train()	

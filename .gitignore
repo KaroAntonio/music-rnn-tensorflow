@@ -1,3 +1,6 @@
 *.pyc
 save/*
 *.npy
+*.png
+*.ckpt
+*.wav

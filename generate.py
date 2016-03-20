@@ -31,7 +31,7 @@ with tf.Session() as sess:
 	saver.restore(sess, "save/model.ckpt")
 
     # TODO fix to accept one sequence at a time
-	x_feed,_ = data.zero_batch()
+	x_feed,_ = data.get_seed()
 	gen_seq = x_feed[0].tolist()
 	for i in range(gen_seq_len):
 

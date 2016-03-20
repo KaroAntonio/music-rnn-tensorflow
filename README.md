@@ -5,6 +5,11 @@ Building off of [GRUV](https://github.com/MattVitelli/GRUV) and [char-rnn-tensor
 
 Based on the seq-rnn-tensorflow framework.
 
+#### Dependencies
+
+[Numpy](http://www.scipy.org/scipylib/download.html)  
+[Tensorflow](https://www.tensorflow.org/versions/r0.7/get_started/os_setup.html)
+
 #### Train
 
 	python train.py

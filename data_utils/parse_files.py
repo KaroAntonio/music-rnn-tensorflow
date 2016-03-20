@@ -90,23 +90,19 @@ def convert_sample_blocks_to_np_audio(blocks):
 	song_np = np.concatenate(blocks)
 	return song_np
 
+
+
 def time_blocks_to_fft_blocks(blocks_time_domain):
     fft_blocks = []
     for block in blocks_time_domain:
-        fft_block = np.fft.fft(block)
-        #2048 chosen because it's always larger than
-        #the hypothetical max of block
-        #(according to Parseval's thm...)
-        #scale to [0,1]
-        new_block = ((np.concatenate((np.real(fft_block), np.imag(fft_block)))/2048)+1)/2
-        fft_blocks.append(new_block)
+		fft_block = np.fft.fft(block)
+		new_block = np.concatenate((np.real(fft_block), np.imag(fft_block)))      
+		fft_blocks.append(new_block)
     return fft_blocks
 
 def fft_blocks_to_time_blocks(blocks_ft_domain):
-    print(blocks_ft_domain.shape)
     time_blocks = []
     for block in blocks_ft_domain:
-        block = ((block*2)-1) * 2048 #reverse scaling
         num_elems = block.shape[0] / 2
         real_chunk = block[0:num_elems]
         imag_chunk = block[num_elems:]
@@ -114,6 +110,41 @@ def fft_blocks_to_time_blocks(blocks_ft_domain):
         time_block = np.fft.ifft(new_block)
         time_blocks.append(time_block)
     return time_blocks
+
+
+
+'''
+def time_blocks_to_fft_blocks(blocks_time_domain, clip_ratio=0):
+    fft_blocks = []
+    for block in blocks_time_domain:
+        fft_block = np.fft.fft(block)
+        #2048 chosen because it's always larger than
+        #the hypothetical max of block
+        #and it's just a nice number ;)
+        #(according to Parseval's thm...)
+        #scale to [0,1]
+        #new_block = ((np.concatenate((np.real(fft_block), np.imag(fft_block)))/2048)+1)/2
+        p = np.zeros(1024*clip_ratio)
+        clip = 1024-1024*clip_ratio
+        new_block = ((np.concatenate((np.real(fft_block[:clip]), np.imag(fft_block[:clip])))/2048)+1)/2
+
+        fft_blocks.append(new_block)
+    return fft_blocks
+
+def fft_blocks_to_time_blocks(blocks_ft_domain, clip_ratio=0):
+    time_blocks = []
+    for block in blocks_ft_domain:
+        block = ((block*2)-1) * 2048 #reverse scaling
+        num_elems = block.shape[0] / 2
+        p = np.zeros(1024*clip_ratio)
+        real_chunk = np.concatenate((block[0:num_elems],p))
+        imag_chunk =  np.concatenate((block[num_elems:],p))
+
+        new_block = real_chunk + 1.0j * imag_chunk
+        time_block = np.fft.ifft(new_block)
+        time_blocks.append(time_block)
+    return time_blocks
+'''
 
 def convert_wav_files_to_nptensor(directory, block_size, max_seq_len, out_file, max_files=20, useTimeDomain=False):
     files = []
