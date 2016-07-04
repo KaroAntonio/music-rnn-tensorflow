@@ -52,7 +52,6 @@ class WaveData(Data):
 		Return x, y sequences from which batches are sampled
 		'''
 
-
 		# Convinience
 		data_dir = self.params['data_dir']
 		n_steps = self.params['n_steps']
