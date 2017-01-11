@@ -1,6 +1,6 @@
 # Music LSTM-RNN
 (in tensorflow)  
-(work in progress)
+(work in progress/unmaintained)
 
 Building off of [GRUV](https://github.com/MattVitelli/GRUV) and [char-rnn-tensorflow](https://github.com/sherjilozair/char-rnn-tensorflow)
 
